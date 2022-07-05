@@ -1,12 +1,15 @@
 {
-  "controllerPathGlobs": ["src/**/*controller.ts"],
+  "entryFile": "./src/server.ts",
+  "basePath": "/",
+  "controllerPathGlobs": [
+    "./src/controllers/index.ts"
+  ],
   "spec": {
     "outputDirectory": "build",
     "specVersion": 3
   },
   "routes": {
-   "entryFile": "./src/controllers/index.ts",
-    "routesDir": "build",
+    "routesDir": "./src",
     "middleware": "express"
   }
 }

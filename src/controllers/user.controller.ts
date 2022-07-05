@@ -1,6 +1,6 @@
-import { Controller, Get, Route } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Route } from 'tsoa';
+import { UserDTO } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
-// import { UserDTO } from '../dtos/user.dto';
 
 const userService = new UserService();
 
@@ -8,27 +8,21 @@ const userService = new UserService();
 export default class UserController extends Controller {
 
   @Get()
-  public async getUsers(): Promise<void> {
-    try {
-      await userService.getUsers();
-    } catch (error) {
-      console.log(error)
-    }
+  public async getUsers(): Promise<UserDTO[] | []> {
+      const user = await userService.getUsers();
+      return user;
   }
-  // @Get('{id}')
-  // public async getUser(@Path() id: string): Promise<UserDTO | undefined> {
-  //   try {
-  //     return await new UserService().getUser(id)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-  // @Post()
-  // async createUser(@Body() userDTO: UserDTO): Promise<UserDTO> {
-  //   const user = await userService.createUser(userDTO)
-  //   if (!user) throw new Error('User not found')
-  //   return user;
-  // }
+  @Get('{id}')
+  public async getUser(@Path() id: string): Promise<UserDTO | null> {
+    const user = await userService.getUser(id)
+
+    return user;
+  }
+  @Post()
+  async createUser(@Body() userDTO: UserDTO): Promise<UserDTO> {
+    const user = await userService.createUser(userDTO)
+    return user;
+  }
   
   // @Put('{id}')
   
