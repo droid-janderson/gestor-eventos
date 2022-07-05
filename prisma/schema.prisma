@@ -8,8 +8,33 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  tipo  String
+id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email     String?   @unique
+  password  String?
+  name      String?
+  role      String?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  Ticket    Ticket[]
+}
+
+model Event {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String?
+  category    String?
+  description String?   @db.Text
+  role        String?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  Ticket      Ticket[]
+}
+
+model Ticket {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  idEvent   String     @db.Uuid
+  idUser    String      @db.Uuid
+  event     Event    @relation(fields: [idEvent], references: [id])
+  user      User     @relation(fields: [idUser], references: [id])
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
 }
